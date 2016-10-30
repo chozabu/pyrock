@@ -1,0 +1,9 @@
+[
+  {
+    "name":"Ωmega99",
+    "ip":"127.0.0.1",
+    "port":9998,
+    "pkey":"omegas_key",
+    "pkeyhash":"omegas_key_hash"
+  }
+]

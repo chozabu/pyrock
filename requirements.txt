@@ -1,0 +1,10 @@
+constantly==15.1.0
+defopt==2.0.1
+docutils==0.12
+incremental==16.10.1
+pkg-resources==0.0.0
+pockets==0.3
+six==1.10.0
+sphinxcontrib-napoleon==0.5.3
+Twisted==16.5.0
+zope.interface==4.3.2

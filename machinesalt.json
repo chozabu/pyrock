@@ -1,0 +1,9 @@
+[
+  {
+    "name":"ALPHA01",
+    "ip":"127.0.0.1",
+    "port": 9999,
+    "pkey":"alphas_key",
+    "pkeyhash":"alphas_key_hash"
+  }
+]

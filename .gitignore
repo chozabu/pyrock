@@ -1,0 +1,6 @@
+.contacts.py.kate-swp
+.idea/
+__pycache__/
+env/
+networking_tests/
+transports/__pycache__/
