@@ -4,7 +4,7 @@ __author__ = "Alex 'Chozabu' P-B"
 __copyright__ = "Copyright 2016, Chozabu"
 
 import machine
-import network, synclist, forums
+import network, synclist, forums, html_ui
 import defopt, json
 import settings, time
 
@@ -28,8 +28,12 @@ def main(settingsfile="settings.json"):
     network.init(data['serve_port'], data['send_port'])
     network.hook_type("hello", test_cb)
 
+    #init synclist
     synclist.init()
     test_sl = synclist.create_synclist("global_test")
+
+    #init html_ui
+    html_ui.init()
 
     #load machines
     machine.loadcontacts(machinesfile)

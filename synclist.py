@@ -59,7 +59,7 @@ class SyncList:
         m = machine.machines_dict[contact]
         print(contact)
         print(item)
-        print("not sending" + str(item) + " to " + str(contact), m)
+        print("sending" + str(item) + " to " + str(contact), m)
         m.send_packet(item, {"type": "synclist", "subtype": "syncitem"})
 
 
@@ -69,6 +69,7 @@ class SyncList:
         ls = contact['last_sync']
         for i in self.items_by_recv_date[ls:]:
             self._send_item(cId, i)
+            print("sent")
         #should confirm contact has got data, then:
         contact['last_sync'] = len(self.items_by_recv_date)
 
