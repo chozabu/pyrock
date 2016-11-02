@@ -28,7 +28,6 @@ class Simple(resource.Resource):
         retstr += "<h3>Synclists</h3>"
         retstr += "<ul>"
         for l in synclist.synclists.values():
-            print("!!!", l)
             retstr += "<li>" + l.ownid + " (" + str(l.items) + ")</li>"
         retstr += "</ul>"
 
@@ -36,13 +35,36 @@ class Simple(resource.Resource):
         print(retstr)
         return retstr.encode()
 
+class Chat(resource.Resource):
+    isLeaf = True
+
+    def render_GET(self, request):
+        request.setHeader("Content-Type", "text/HTML; charset=utf-8")
+
+        retstr = "<html>"
+        retstr += "<h1>PyRock CHAT UI</h1>"
+        retstr += "<h4>This machine is: " + settings.machine_name + "</h4>"
+
+        retstr += "<h3>Friends</h3>"
+        retstr += "<ul>"
+        for m in machine.machines:
+            retstr += "<li>" + m.name + " (" + m.ip + ")</li>"
+        retstr += "</ul>"
+
+        retstr += "</html>"
+        print(retstr)
+        return retstr.encode()
 #site = server.Site(Simple())
 #reactor.listenTCP(8080, site)
 #reactor.run()
 
 
 def init(serve_port=8080):
-    site = server.Site(Simple())
+    root = resource.Resource()
+    root.putChild(b"", Simple())
+    root.putChild(b"chat", Chat())
+    #root.putChild(b"book", Book())
+    site = server.Site(root)
     endpoints.serverFromString(reactor, "tcp:"+str(serve_port)).listen(site)
     #print("starting networking thread")
     t=Thread(
