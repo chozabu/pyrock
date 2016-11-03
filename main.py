@@ -61,11 +61,10 @@ def main(settingsfile="settings.json"):
     print("resulting items:", test_sl.items)
 
 
+    #connect to all?
 
-    #connect to all
-    #loop
-    #   check net input
-    #   event tick
+    while settings.running:
+        time.sleep(1)
 
 
 if __name__ == '__main__':
