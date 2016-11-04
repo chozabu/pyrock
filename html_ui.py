@@ -13,6 +13,8 @@ import machine
 import settings
 import synclist
 
+from apps import basic_chat
+
 
 class Simple(resource.Resource):
     isLeaf = True
@@ -46,14 +48,29 @@ class Chat(resource.Resource):
     def render_GET(self, request):
         request.setHeader("Content-Type", "text/HTML; charset=utf-8")
 
+        if b'newmessage' in request.args:
+            print(str(request.args[b'newmessage'][0]))
+            basic_chat.send_message(request.args[b'newmessage'][0].decode())
+            request.redirect("/chat")
+            #request.finish()
+            return b"no"
+
         retstr = "<html>"
         retstr += "<h1>PyRock CHAT UI</h1>"
         retstr += "<h4>This machine is: " + settings.machine_name + "</h4>"
 
-        retstr += "<h3>Friends</h3>"
+        retstr += '''
+            <form action="chat">
+              First name:<br>
+              <input type="text" name="newmessage" value="" placeholder="type message here"><br>
+              <input type="submit" value="Submit">
+            </form>
+        '''
+
+        retstr += "<h3>messages</h3>"
         retstr += "<ul>"
-        for m in machine.machines:
-            retstr += "<li>" + m.name + " (" + m.ip + ")</li>"
+        for m in basic_chat.messagelist:
+            retstr += "<li>" + str(m) + "</li>"
         retstr += "</ul>"
 
         retstr += "</html>"
