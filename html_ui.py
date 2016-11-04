@@ -3,12 +3,16 @@
 __author__ = "Alex 'Chozabu' P-B"
 __copyright__ = "Copyright 2016, Chozabu"
 
-from threading import Semaphore, Thread
+from threading import Thread
 from time import sleep
-from twisted.web import server, resource
-from twisted.internet import protocol, reactor, endpoints
 
-import machine, synclist, forums, settings
+from twisted.internet import reactor, endpoints
+from twisted.web import server, resource
+
+import machine
+import settings
+import synclist
+
 
 class Simple(resource.Resource):
     isLeaf = True

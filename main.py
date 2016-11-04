@@ -3,10 +3,16 @@
 __author__ = "Alex 'Chozabu' P-B"
 __copyright__ = "Copyright 2016, Chozabu"
 
+import defopt
+import json
+
+import html_ui
 import machine
-import network, synclist, forums, html_ui
-import defopt, json
-import settings, time
+import network
+import settings
+import synclist
+import time
+
 
 def test_cb(data, sender):
     print(settings.machine_name, "MAINCB", data, sender, sender.ip, sender.name)
