@@ -12,7 +12,7 @@ def create_synclist(id):
     return SyncList(id)
 
 def on_recv_item(data, sender, meta):
-    print("Got sync related item:", data, sender)
+    print("!!!Got sync related item:", data, sender, meta['subtype'])
     meta = data['meta']
     data = data['data']
     slid = data['id']
@@ -20,6 +20,13 @@ def on_recv_item(data, sender, meta):
     if sl:
         print(sl.items)
         if meta['subtype'] == "subscribe":
+            sl.subscribe(sender)
+            sl.sync_to_contact(sender.pkey)
+            print("XXrequesting revers subscrive")
+            #sender.send_packet({"id":slid},{"type":"synclist", "subtype":"reverse_subscribe"})
+            print("requested")
+        if meta['subtype'] == "reverse_subscribe":
+            print("ZZGIO reverse subscrive")
             sl.subscribe(sender)
             sl.sync_to_contact(sender.pkey)
         if meta['subtype'] == "syncitem":
@@ -34,12 +41,12 @@ def subscribe_list(id):
 
 class SyncList:
     def __init__(self, ownid="testid"):
+        synclists[ownid] = self
         self.ownid = ownid
         self.items_by_recv_date = []
         self.items = {}
         self.subscribers = {}
         subscribe_list(ownid)
-        synclists[ownid] = self
         #subscribers[self.ownid] = {'last_sync':0}
 
 
