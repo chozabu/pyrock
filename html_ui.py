@@ -202,7 +202,7 @@ def init(serve_port=None):
         kwargs={'installSignalHandlers':False})
     t.daemon=True
     print("UI on port", serve_port)
-    t.start()
+    #t.start()
     #print("running")
 
 if __name__ == "__main__":
