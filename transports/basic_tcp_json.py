@@ -78,7 +78,7 @@ def init(serve_port, send_port):
         kwargs={'installSignalHandlers':False})
     t.daemon=True
     t.start()
-    #print("running")
+    print("basic network listening on", serve_port)
 
 if __name__ == "__main__":
     init()

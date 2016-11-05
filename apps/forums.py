@@ -15,6 +15,7 @@ def got_data(data, machine, meta):
     print(settings.machine_name, data, machine.name)
 
 def create_forum(forumname):
+    print("creating forum", forumname)
     new_forum = Forum(forumname, forumname)
     forums.append(new_forum)
     forums_dict[forumname] = new_forum
@@ -33,6 +34,3 @@ class Forum():
 def testing():
     p1 = createPost(myforum, title="testingtitle", body="something")
     createPost(myforum, title="testingtitle", body="something", parent=p1)
-
-
-    
