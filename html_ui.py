@@ -185,7 +185,9 @@ class Quit(resource.Resource):
 #reactor.run()
 
 
-def init(serve_port=8080):
+def init(serve_port=None):
+    if not serve_port:
+        serve_port = settings.ui_port
     root = resource.Resource()
     root.putChild(b"", Simple())
     root.putChild(b"chat", Chat())
@@ -199,6 +201,7 @@ def init(serve_port=8080):
         target=reactor.run,
         kwargs={'installSignalHandlers':False})
     t.daemon=True
+    print("UI on port", serve_port)
     t.start()
     #print("running")
 

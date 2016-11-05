@@ -3,5 +3,6 @@
   "pkey": "alphas_key",
   "serve_port": 9999,
   "send_port":9998,
-  "machines_file": "machines.json"
+  "machines_file": "machines.json",
+  "ui_port":12035
 }

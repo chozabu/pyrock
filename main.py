@@ -29,6 +29,7 @@ def main(settingsfile="settings.json"):
         machinesfile = data['machines_file']
         settings.machine_name = data['machine_name']
         settings.pkey = data['pkey']
+        settings.ui_port = data['ui_port']
 
     #init network
     network.init(data['serve_port'], data['send_port'])

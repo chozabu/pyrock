@@ -3,5 +3,6 @@
   "pkey": "omegas_key",
   "serve_port": 9998,
   "send_port":9999,
-  "machines_file": "machinesalt.json"
+  "machines_file": "machinesalt.json",
+  "ui_port":12034
 }
