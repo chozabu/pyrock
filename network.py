@@ -20,7 +20,7 @@ def on_recv_packet(data, sender):
     type = meta['type']
     if type in callbacks:
         for c in callbacks[type]:
-            c(data, sender)
+            c(data, sender, meta)
 
 def init(serve_port, send_port):
     basic_tcp_json.init(serve_port=serve_port, send_port=send_port)

@@ -14,7 +14,7 @@ import synclist
 import time
 
 
-def test_cb(data, sender):
+def test_cb(data, sender, meta):
     print(settings.machine_name, "MAINCB", data, sender, sender.ip, sender.name)
 
 def main(settingsfile="settings.json"):

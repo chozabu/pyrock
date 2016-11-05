@@ -13,7 +13,7 @@ messagelist = []
 def init(root):
     network.hook_type("basic_chat", got_data)
 
-def got_data(data, machine):
+def got_data(data, machine, meta):
     print(settings.machine_name, data, machine.name)
     messagelist.append(machine.name + ": " + data['message'])
 

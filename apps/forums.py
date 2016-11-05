@@ -11,7 +11,7 @@ forums_dict = {}
 def init(root):
     network.hook_type("forum", got_data)
 
-def got_data(data, machine):
+def got_data(data, machine, meta):
     print(settings.machine_name, data, machine.name)
 
 def createForum(forumname):
@@ -21,12 +21,12 @@ def createForum(forumname):
 
 class Forum():
     def __init__(self, name="testforum", id="testid"):
-        self.items = SyncList()
+        self.items = SyncList(ownid=id)
         self.name = name
         self.id = id
     def create_post(self, item):
-        self.items.push(item)
-        self.items.sync_all()
+        self.items.publish_item(item)
+        self.items.sync_to_all()
     def get_posts(self):
         return self.items.items
 

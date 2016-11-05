@@ -71,7 +71,7 @@ class Chat(resource.Resource):
         retstr += '''
             <form action="chat">
               First name:<br>
-              <input type="text" name="newmessage" value="" placeholder="type message here"><br>
+              <input type="text" name="newmessage" value="" placeholder="type message here" autofocus="autofocus"><br>
               <input type="submit" value="Submit">
             </form>
         '''

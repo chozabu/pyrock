@@ -13,7 +13,7 @@ def create_synclist(id):
     synclists[id] = sl
     return sl
 
-def on_recv_item(data, sender):
+def on_recv_item(data, sender, meta):
     print("Got sync related item:", data, sender)
     meta = data['meta']
     data = data['data']
