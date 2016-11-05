@@ -134,8 +134,14 @@ class Forums(resource.Resource):
         if b'view' in request.args:#not request.args:
             forumid = request.args[b'view'][0].decode()
             forum = forums.forums_dict[forumid]
+            retstr += "<h1>" + forum.name + "</h1>"
             retstr += "<ul>"
             for m in forum.get_posts():
+                retstr += '<li>' + str(m) + '</li>'
+            retstr += "</ul>"
+
+            retstr += "<ul>"
+            for m in forum.items.subscribers:
                 retstr += '<li>' + str(m) + '</li>'
             retstr += "</ul>"
 
