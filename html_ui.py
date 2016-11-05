@@ -15,6 +15,13 @@ import synclist
 
 from apps import basic_chat
 
+header = '''
+<h1>PyRock</h1>
+<a href="/">home</a>
+<a href="/chat/">chat</a>
+<a href="/quit/">quit</a>
+'''
+
 
 class Simple(resource.Resource):
     isLeaf = True
@@ -22,7 +29,8 @@ class Simple(resource.Resource):
         request.setHeader("Content-Type", "text/HTML; charset=utf-8")
 
         retstr = "<html>"
-        retstr += "<h1>PyRock UI</h1>"
+        retstr += header
+        retstr += "<h2>Home</h2>"
         retstr += "<h4>This machine is: " + settings.machine_name + "</h4>"
         retstr += '<a href="/quit/">Quit</a>'
 
@@ -56,7 +64,8 @@ class Chat(resource.Resource):
             return b"no"
 
         retstr = "<html>"
-        retstr += "<h1>PyRock CHAT UI</h1>"
+        retstr += header
+        retstr += "<h2>Chat</h2>"
         retstr += "<h4>This machine is: " + settings.machine_name + "</h4>"
 
         retstr += '''
@@ -85,7 +94,7 @@ class Quit(resource.Resource):
 
         retstr = "<html>"
         retstr += "<h1>PyRock Quitting</h1>"
-        retstr += '<a href="/">Home</a>'
+        retstr += 'Goodbye'
         retstr += "</html>"
         print(retstr)
         return retstr.encode()
