@@ -12,7 +12,9 @@ import network
 import settings
 import synclist
 import time
+from apps import basic_chat
 
+import random
 
 def test_cb(data, sender, meta):
     print(settings.machine_name, "MAINCB", data, sender, sender.ip, sender.name)
@@ -37,13 +39,18 @@ def main(settingsfile="settings.json"):
 
     #init synclist
     synclist.init()
-    test_sl = synclist.create_synclist("global_test")
+
+    #init basic_chat
+    basic_chat.init()
 
     #init html_ui
     html_ui.init()
 
     #load machines
     machine.loadcontacts(machinesfile)
+
+
+    test_sl = synclist.create_synclist("global_test")
 
     #get machine for testing
     tf = machine.machines[0]
@@ -54,14 +61,13 @@ def main(settingsfile="settings.json"):
     #ret = tf.send_data("test")
     ret = tf.send_packet({}, {"type":"hello"})
     print(settings.machine_name, ret)
-    time.sleep(.2)
+    time.sleep(.2)#+random.random())
 
-    from random import random
     test_sl.publish_item({"testitem":"I am "+ settings.machine_name})
 
     time.sleep(.3)
 
-    synclist.subscribe_list("global_test")
+    #synclist.subscribe_list("global_test")
 
     time.sleep(.3)
 
