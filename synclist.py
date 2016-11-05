@@ -1,7 +1,7 @@
 #synclist provides a high level list of dicts/json self.items
 #it should be able to use multiple underlying transports
 
-import machine, network
+import machine, network, settings
 
 synclists = {}
 
@@ -18,14 +18,15 @@ def on_recv_item(data, sender, meta):
     meta = data['meta']
     data = data['data']
     slid = data['id']
-    sl = synclists[slid]
-    if meta['subtype'] == "subscribe":
-        sl.subscribe(sender)
-        sl.sync_to_contact(sender.pkey)
-    if meta['subtype'] == "syncitem":
-        print("SYNCITEM")
-        sl.on_recv_item(sender.pkey, data)
-    print(sl.items)
+    sl = synclists.get(slid)
+    if sl:
+        print(sl.items)
+        if meta['subtype'] == "subscribe":
+            sl.subscribe(sender)
+            sl.sync_to_contact(sender.pkey)
+        if meta['subtype'] == "syncitem":
+            print("SYNCITEM")
+            sl.on_recv_item(sender.pkey, data)
 
 def subscribe_list(id):
     machine.send_all({"id":id},{"type":"synclist", "subtype":"subscribe"})
@@ -37,6 +38,7 @@ class SyncList:
         self.items_by_recv_date = []
         self.items = {}
         self.subscribers = {}
+        #subscribe_list(ownid)
         #subscribers[self.ownid] = {'last_sync':0}
 
 
@@ -48,18 +50,19 @@ class SyncList:
     
     def publish_item(self, item):
         item['hash'] = hash(str(item))
-        self.on_recv_item(self.ownid, item)
+        self.on_recv_item(settings.pkey, item)
+        #self.sync_to_all()
 
     def subscribe(self, m):
         self.subscribers[m.pkey] = {'last_sync':0, "machine": m}
-        self.sync_to_contact(m.pkey)
+        #self.sync_to_contact(m.pkey)
 
     def _send_item(self, contact, item):
         item['id'] = self.ownid
         m = machine.machines_dict[contact]
         print(contact)
         print(item)
-        print("sending" + str(item) + " to " + str(contact), m)
+        print("sending" + str(item) + " to " + str(contact), m.name)
         m.send_packet(item, {"type": "synclist", "subtype": "syncitem"})
 
 
@@ -67,6 +70,7 @@ class SyncList:
     def sync_to_contact(self, cId):
         contact = self.subscribers[cId]
         ls = contact['last_sync']
+        #print(self.items_by_recv_date)
         for i in self.items_by_recv_date[ls:]:
             self._send_item(cId, i)
             print("sent")
