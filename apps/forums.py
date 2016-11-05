@@ -14,9 +14,9 @@ def init(root):
 def got_data(data, machine, meta):
     print(settings.machine_name, data, machine.name)
 
-def createForum(forumname):
+def create_forum(forumname):
     new_forum = Forum(forumname, forumname)
-    forums.push(new_forum)
+    forums.append(new_forum)
     forums_dict[forumname] = new_forum
 
 class Forum():
@@ -28,7 +28,7 @@ class Forum():
         self.items.publish_item(item)
         self.items.sync_to_all()
     def get_posts(self):
-        return self.items.items
+        return self.items.items_by_recv_date
 
 def testing():
     p1 = createPost(myforum, title="testingtitle", body="something")
