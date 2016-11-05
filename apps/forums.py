@@ -1,6 +1,6 @@
 #forum app puesdo code:
 
-from synclist import SyncList
+import synclist
 import network
 import settings
 
@@ -16,13 +16,18 @@ def got_data(data, machine, meta):
 
 def create_forum(forumname):
     print("creating forum", forumname)
-    new_forum = Forum(forumname, forumname)
-    forums.append(new_forum)
+    if forumname in forums_dict:
+        new_forum = forums_dict[forumname]
+        synclist.subscribe_list(new_forum.id)
+    else:
+        new_forum = Forum(forumname, forumname)
+        forums.append(new_forum)
+
     forums_dict[forumname] = new_forum
 
 class Forum():
     def __init__(self, name="testforum", id="testid"):
-        self.items = SyncList(ownid=id)
+        self.items = synclist.SyncList(ownid=id)
         self.name = name
         self.id = id
     def create_post(self, item):
