@@ -57,7 +57,7 @@ def main(settingsfile="settings.json"):
     time.sleep(.2)
 
     from random import random
-    test_sl.publish_item({"testitem":"yep"+str(random())})
+    test_sl.publish_item({"testitem":"I am "+ settings.machine_name})
 
     time.sleep(.3)
 

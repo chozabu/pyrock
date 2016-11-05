@@ -9,9 +9,7 @@ def init():
     network.hook_type("synclist", on_recv_item)
 
 def create_synclist(id):
-    sl = SyncList(id)
-    synclists[id] = sl
-    return sl
+    return SyncList(id)
 
 def on_recv_item(data, sender, meta):
     print("Got sync related item:", data, sender)
@@ -27,6 +25,8 @@ def on_recv_item(data, sender, meta):
         if meta['subtype'] == "syncitem":
             print("SYNCITEM")
             sl.on_recv_item(sender.pkey, data)
+    else:
+        print("FAIL", slid, "not found")
 
 def subscribe_list(id):
     machine.send_all({"id":id},{"type":"synclist", "subtype":"subscribe"})
@@ -38,7 +38,8 @@ class SyncList:
         self.items_by_recv_date = []
         self.items = {}
         self.subscribers = {}
-        #subscribe_list(ownid)
+        subscribe_list(ownid)
+        synclists[ownid] = self
         #subscribers[self.ownid] = {'last_sync':0}
 
 
@@ -49,9 +50,10 @@ class SyncList:
             self.items[item['hash']] = item
     
     def publish_item(self, item):
+        print("publishing", item)
         item['hash'] = hash(str(item))
         self.on_recv_item(settings.pkey, item)
-        #self.sync_to_all()
+        self.sync_to_all()
 
     def subscribe(self, m):
         self.subscribers[m.pkey] = {'last_sync':0, "machine": m}
