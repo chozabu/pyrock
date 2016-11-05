@@ -48,7 +48,7 @@ class Simple(resource.Resource):
         retstr += "</ul>"
 
         retstr += "</html>"
-        print(retstr)
+        #print(retstr)
         return retstr.encode()
 
 class Chat(resource.Resource):
@@ -84,7 +84,7 @@ class Chat(resource.Resource):
         retstr += "</ul>"
 
         retstr += "</html>"
-        print(retstr)
+        #print(retstr)
         return retstr.encode()
 class Forums(resource.Resource):
     isLeaf = True
@@ -165,7 +165,7 @@ class Forums(resource.Resource):
         retstr += "</ul>"
 
         retstr += "</html>"
-        print(retstr)
+        #print(retstr)
         return retstr.encode()
 class Quit(resource.Resource):
     isLeaf = True
@@ -178,7 +178,7 @@ class Quit(resource.Resource):
         retstr += "<h1>PyRock Quitting</h1>"
         retstr += 'Goodbye'
         retstr += "</html>"
-        print(retstr)
+        #print(retstr)
         return retstr.encode()
 #site = server.Site(Simple())
 #reactor.listenTCP(8080, site)
