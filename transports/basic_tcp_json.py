@@ -29,7 +29,7 @@ def send_data(HOST, PORT, data):
         #print("Sent:     {}".format(data))
         #print("Received: {}".format(received))
     except:
-        print("failed to send data", HOST, PORT, data)
+        print("TWISTED failed to send data", HOST, PORT, data)
         return 0, "fail"
     return 1, received
 

@@ -31,7 +31,7 @@ class testHTTPServer_RequestHandler(BaseHTTPRequestHandler):
         self.end_headers()
 
         # Send message back to client
-        message = "Hello world!"
+        message = "Hey, you should POST some json with the correct formatting to this endpoint!"
         # Write content as utf-8 data
         self.wfile.write(bytes(message, "utf8"))
         return
@@ -68,11 +68,12 @@ def send_data(HOST, PORT, data):
     #print("sending", HOST, PORT, data)
     PORT = PORT + 10
 
-    received = requests.post("http://localhost" + ":" + str(PORT), data=data)
+    #received = requests.post("http://localhost" + ":" + str(PORT), data=data)
     try:
-        received = requests.post(HOST+":"+str(PORT), data=data)
-    except:
-        print("failed to send data", HOST, PORT, data)
+        received = requests.post("http://" + HOST+":"+str(PORT), data=data)
+    except Exception as e:
+        print(e)
+        print("HTTP failed to send data", HOST, PORT, data)
         return 0, "fail"
     return 1, received
 

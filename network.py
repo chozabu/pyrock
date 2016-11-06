@@ -13,8 +13,10 @@ callbacks = {}
 def send_packet(HOST, PORT, data, meta):
     meta['pkey'] = settings.pkey
     packet = json.dumps({"data":data, "meta":meta})
-    #ret = basic_tcp_json.send_data(HOST,PORT, packet)
     ret = simple_http_json.send_data(HOST,PORT, packet)
+    if not ret[0]:
+        ret = basic_tcp_json.send_data(HOST,PORT, packet)
+    #ret = simple_http_json.send_data(HOST,PORT, packet)
     return ret
 
 def on_recv_packet(data, sender):
