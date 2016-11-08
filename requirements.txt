@@ -4,6 +4,7 @@ docutils==0.12
 incremental==16.10.1
 pkg-resources==0.0.0
 pockets==0.3
+requests==2.11.1
 six==1.10.0
 sphinxcontrib-napoleon==0.5.3
 Twisted==16.5.0
