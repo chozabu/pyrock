@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>WebSocket demo</title>
+    </head>
+    <body>
+    <form id="message-form" action="#" method="post">
+      <textarea id="message" placeholder="Write your message here..." required></textarea>
+      <button type="submit">Send Message</button>
+      <button type="button" id="close">Close Connection</button>
+    </form>
+    
+    
+    <ul id="messages"></ul>
+    
+        <script>
+            var form = document.getElementById('message-form');
+            var messagesList = document.getElementById('messages');
+            var messageField = document.getElementById('message');
+            var ws = new WebSocket("ws://127.0.0.1:5678/"),
+                messages = document.createElement('ul');
+            ws.onmessage = function (event) {
+                var messages = document.getElementsByTagName('ul')[0],
+                    message = document.createElement('li'),
+                    content = document.createTextNode(event.data);
+                message.appendChild(content);
+                messages.appendChild(message);
+            };
+            document.body.appendChild(messages);
+            
+            form.onsubmit = function(e) {
+                e.preventDefault();
+
+                // Retrieve the message from the textarea.
+                var message = messageField.value;
+
+                // Send the message through the WebSocket.
+                ws.send(message);
+
+                // Add the message to the messages list.
+                messagesList.innerHTML += '<li class="sent"><span>Sent:</span>' + message +
+                                            '</li>';
+
+                // Clear out the message field.
+                messageField.value = '';
+
+                return false;
+                };
+        </script>
+    </body>
+</html>
