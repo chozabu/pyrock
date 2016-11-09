@@ -12,6 +12,7 @@ import asyncio
 import datetime
 import random
 import websockets
+import network
 
 
 import machine
@@ -44,7 +45,23 @@ def _init():
     asyncio.get_event_loop().run_until_complete(start_server)
     asyncio.get_event_loop().run_forever()
 
+
+def got_chat_msg(data, machine, meta):
+    try:
+        loop = asyncio.get_event_loop()
+    except:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+    loop.run_until_complete(pump_msg(data))
+
+
+async def pump_msg(data):
+    for c in connected:
+        await c.send(str(data))
+
+
 def init():
+    network.hook_type("basic_chat", got_chat_msg)
     print("WSUI will be on port", serve_port)
     t=Thread(
         target=_init,
