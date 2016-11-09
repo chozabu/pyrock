@@ -27,11 +27,18 @@ serve_port = 5678
 async def time(websocket, path):
     connected.add(websocket)
     while True:
-        data = await websocket.recv()
-        print("got", data)
-        now = datetime.datetime.utcnow().isoformat() + 'Z' + str(connected)
-        await websocket.send(now + data)
-        #await asyncio.sleep(random.random() * 3)
+        try:
+            data = await websocket.recv()
+            print("got", data)
+            now = datetime.datetime.utcnow().isoformat() + 'Z' + str(connected)
+            await websocket.send(now + data)
+        except websockets.exceptions.ConnectionClosed as e:
+            if websocket in connected:
+                connected.remove(websocket)
+                print("WS client disconnected")
+            else:
+                print("Unknown WS client disconnected")
+            break
 
 
 def _init():
@@ -56,8 +63,15 @@ def got_chat_msg(data, machine, meta):
 
 
 async def pump_msg(data):
+    remlist = []
     for c in connected:
-        await c.send(str(data))
+        try:
+            await c.send(str(data))
+        except websockets.exceptions.ConnectionClosed as e:
+            remlist.append(c)
+            print("WS client disconnected")
+    for r in remlist:
+        connected.remove(r)
 
 
 def init():
