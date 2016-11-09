@@ -7,22 +7,24 @@ PyRock is aiming to be a high level authorised decentral networking solution
 ###current features
 
 - basic sockets networking backend
-- read some machine contacts from a file
+- basic HTTP POST networking backend
+- machine contacts (from a file)
 - start of synclist, high level sync/additive json store
+- very basic HTML UI
+- start of websockets interface for UI
+- start of forums
+- instant messenger (broadcast)
 
 ###todo
 
-- forum
 - human contacts
-- instant messenger
 - keypairs
-- UI
 - data storage
 - API/IPC/Plugins
 - Solidify protocol
 - global connection graph
-- alternate network backends
-- alternate language implementations
+- more alternate network backends
+- alternate programming language implementations
 
 ###more todo
 - blogs
