@@ -7,6 +7,7 @@ import defopt
 import json
 
 import html_ui
+import websockets_ui
 import machine
 import network
 import settings
@@ -43,8 +44,9 @@ def main(settingsfile="settings.json"):
     #init basic_chat
     basic_chat.init()
 
-    #init html_ui
+    #init html
     html_ui.init()
+    websockets_ui.init()
 
     #load machines
     machine.loadcontacts(machinesfile)
