@@ -13,6 +13,7 @@ import datetime
 import random
 import websockets
 import network
+import json
 
 
 import machine
@@ -24,14 +25,35 @@ from apps import basic_chat, forums
 connected = set()
 serve_port = 5678
 
-async def time(websocket, path):
+async def handle(websocket, path):
     connected.add(websocket)
     while True:
         try:
             data = await websocket.recv()
+            jdata=None
+            try:
+                jdata = json.loads(data)
+            except:
+                await websocket.send("sorry, couldn't decode that json!")
             print("got", data)
+            if jdata:
+                intent = jdata.get("intent")
+                if not intent:
+                    await websocket.send("you must give an 'intent'")
+                else:
+                    if intent == "ping":
+                        await websocket.send("pong")
+                    elif intent == "broadcast":
+                        basic_chat.send_message(jdata['message'])
+                        await websocket.send(json.dumps({"OK":"OK"}))
+                    elif intent == "get_chat":
+                        await websocket.send(json.dumps(basic_chat.messagelist))
+                    elif intent == "get_forums":
+                        await websocket.send(json.dumps([(f.name, f.id) for f in forums.forums]))
+
+
             now = datetime.datetime.utcnow().isoformat() + 'Z' + str(connected)
-            await websocket.send(now + data)
+
         except websockets.exceptions.ConnectionClosed as e:
             if websocket in connected:
                 connected.remove(websocket)
@@ -47,7 +69,7 @@ def _init():
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
 
-    start_server = websockets.serve(time, '127.0.0.1', serve_port)
+    start_server = websockets.serve(handle, '127.0.0.1', serve_port)
 
     asyncio.get_event_loop().run_until_complete(start_server)
     asyncio.get_event_loop().run_forever()
