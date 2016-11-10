@@ -4,19 +4,27 @@
         <title>WebSocket demo</title>
     </head>
     <body>
+    <form id="raw-form" action="#" method="post">
+      <textarea id="raw-message" placeholder="RAW JSON" required></textarea>
+      <button type="submit">Send Message</button>
+    </form>
     <form id="message-form" action="#" method="post">
       <textarea id="message" placeholder="Write your message here..." required></textarea>
       <button type="submit">Send Message</button>
-      <button type="button" id="close">Close Connection</button>
     </form>
+      <button type="button" id="ping" onclick="pingit()">ping</button>
+      <button type="button" id="getchat" onclick="getchat()">chat history</button>
+      <button type="button" id="getforums" onclick="getforums()">forums</button>
     
     
     <ul id="messages"></ul>
     
         <script>
+            var rawform = document.getElementById('raw-form');
             var form = document.getElementById('message-form');
             var messagesList = document.getElementById('messages');
             var messageField = document.getElementById('message');
+            var rawmessageField = document.getElementById('raw-message');
             var ws = new WebSocket("ws://127.0.0.1:5678/"),
                 messages = document.createElement('ul');
             ws.onmessage = function (event) {
@@ -27,7 +35,19 @@
                 messages.appendChild(message);
             };
             document.body.appendChild(messages);
-            
+
+            pingit = function(e) {
+                ws.send('{"intent":"ping"}');
+            };
+
+            getchat = function(e) {
+                ws.send('{"intent":"get_chat"}');
+            };
+
+            getforums = function(e) {
+                ws.send('{"intent":"get_forums"}');
+            };
+
             form.onsubmit = function(e) {
                 e.preventDefault();
 
@@ -35,7 +55,43 @@
                 var message = messageField.value;
 
                 // Send the message through the WebSocket.
+                ws.send(JSON.stringify({intent:"broadcast", message:message}));
+
+                // Add the message to the messages list.
+                messagesList.innerHTML += '<li class="sent"><span>Sent:</span>' + message +
+                                            '</li>';
+
+                // Clear out the message field.
+                messageField.value = '';
+
+                return false;
+                };
+            rawform.onsubmit = function(e) {
+                e.preventDefault();
+
+                // Retrieve the message from the textarea.
+                var message = rawmessageField.value;
+
+                // Send the message through the WebSocket.
                 ws.send(message);
+
+                // Add the message to the messages list.
+                messagesList.innerHTML += '<li class="sent"><span>Sent:</span>' + message +
+                                            '</li>';
+
+                // Clear out the message field.
+                rawmessageField.value = '';
+
+                return false;
+                };
+            chatform.onsubmit = function(e) {
+                e.preventDefault();
+
+                // Retrieve the message from the textarea.
+                var message = messageField.value;
+
+                // Send the message through the WebSocket.
+                ws.send(JSON.stringify({"intent":"broadcast", "message":message}));
 
                 // Add the message to the messages list.
                 messagesList.innerHTML += '<li class="sent"><span>Sent:</span>' + message +
