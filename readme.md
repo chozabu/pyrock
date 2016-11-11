@@ -4,6 +4,20 @@ PyRock is aiming to be a high level authorised decentral networking solution
 
 ### unusably early stages
 
+####running
+
+create a venv, activate and install requirements
+
+virtualenv -p python3 env
+. env/bin/activate
+pip install -r requirements
+
+you can now run main.py with
+
+python main.py
+
+or run two instances with ./testit.sh
+
 ###current features
 
 - basic sockets networking backend
