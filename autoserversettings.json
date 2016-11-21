@@ -3,6 +3,6 @@
   "pkey": "autoserver_key",
   "serve_port": 9999,
   "send_port":9998,
-  "machines_file": "machines.json",
+  "machines_file": "emptymachines.json",
   "ui_port":12035
 }
