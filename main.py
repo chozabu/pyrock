@@ -20,10 +20,11 @@ import random
 def test_cb(data, sender, meta):
     print(settings.machine_name, "MAINCB", data, sender, sender.ip, sender.name)
 
-def main(settingsfile="settings.json"):
+def main(settingsfile="settings.json", test_mode=False):
     """Display a friendly greeting.
 
     :param str settingsfile: settings file to load
+    :param bool test_mode: True to run some tests
     """
 
     #load settings
@@ -51,7 +52,19 @@ def main(settingsfile="settings.json"):
     #load machines
     machine.loadcontacts(machinesfile)
 
+    #connect to all?
 
+    print("Init Complete")
+
+    if test_mode:
+        run_tests()
+
+    while settings.running:
+        time.sleep(1)
+
+
+def run_tests():
+    print("Running tests")
     test_sl = synclist.create_synclist("global_test")
 
     #get machine for testing
@@ -76,10 +89,7 @@ def main(settingsfile="settings.json"):
     print("resulting items:", test_sl.items)
 
 
-    #connect to all?
 
-    while settings.running:
-        time.sleep(1)
 
 
 if __name__ == '__main__':
