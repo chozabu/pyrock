@@ -41,7 +41,7 @@ class testHTTPServer_RequestHandler(BaseHTTPRequestHandler):
         print()
         jdata = json.loads(rfile.decode('utf-8'))
         print("POSTED", jdata)
-        sender = machine.machines_dict[jdata['meta']['pkey']]
+        sender = machine.machines_dict.get(jdata['meta']['pkey'])
         on_recv_data(jdata, sender)
         self.send_response(200)
 

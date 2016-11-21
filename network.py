@@ -6,6 +6,7 @@ __copyright__ = "Copyright 2016, Chozabu"
 from transports import basic_tcp_json
 from transports import simple_http_json
 import settings
+import machine
 import json
 
 callbacks = {}

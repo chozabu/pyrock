@@ -2,6 +2,7 @@
 import json
 from pprint import pprint
 from network import send_packet
+import network
 import settings
 
 
@@ -45,3 +46,25 @@ def loadcontacts(machinesfile='machines.json'):
         )
         machines.append(machine)
         machines_dict[machine.pkey] = machine
+
+def add_machine(name, pkey, ip, port):
+    machine = Machine(
+        name=name,
+        pkey=pkey,
+        pkeyhash=str(hash(pkey)),
+        ip=ip,
+        port=port,
+    )
+    machines.append(machine)
+    machines_dict[machine.pkey] = machine
+    return machine
+
+def init(root):
+    network.hook_type("machine", got_data)
+
+def got_data(data, machine, meta):
+    print(settings.machine_name, data, machine.name)
+    if meta['subtype'] == "hello":
+        if settings.auto_accept == True:
+            mdata = data['data']
+            add_machine(**mdata)

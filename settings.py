@@ -7,3 +7,4 @@ machine_name = "unknown"
 pkey = "unknown"
 running = True
 ui_port = 8080
+auto_accept = True
