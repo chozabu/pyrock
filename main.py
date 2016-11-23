@@ -15,6 +15,8 @@ import synclist
 import time
 from apps import basic_chat
 
+#import debugprint
+
 import random
 
 def test_cb(data, sender, meta):
@@ -67,7 +69,7 @@ def main(settingsfile="settings.json", test_mode=False):
 
 
 def run_tests():
-    print("Running tests")
+    print(settings.machine_name, "Running tests")
     test_sl = synclist.create_synclist("global_test")
 
     #get machine for testing

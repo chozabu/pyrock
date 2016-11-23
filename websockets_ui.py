@@ -81,7 +81,11 @@ def got_chat_msg(data, machine, meta):
     except:
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
-    loop.run_until_complete(pump_msg(data))
+    try:
+        loop.run_until_complete(pump_msg(data))
+    except Exception as e:
+        print(e)
+        print("websoockets api failed to start")
 
 
 async def pump_msg(data):
