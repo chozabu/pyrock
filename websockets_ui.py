@@ -71,8 +71,12 @@ def _init():
 
     start_server = websockets.serve(handle, '127.0.0.1', serve_port)
 
-    asyncio.get_event_loop().run_until_complete(start_server)
-    asyncio.get_event_loop().run_forever()
+    try:
+        asyncio.get_event_loop().run_until_complete(start_server)
+        asyncio.get_event_loop().run_forever()
+    except Exception as e:
+        print(e)
+        print("websoockets api failed to start")
 
 
 def got_chat_msg(data, machine, meta):
@@ -85,7 +89,7 @@ def got_chat_msg(data, machine, meta):
         loop.run_until_complete(pump_msg(data))
     except Exception as e:
         print(e)
-        print("websoockets api failed to start")
+        print("websoockets api failed to complete message")
 
 
 async def pump_msg(data):
