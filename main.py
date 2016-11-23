@@ -36,7 +36,7 @@ def main(settingsfile="settings.json", test_mode=False):
         settings.ui_port = data['ui_port']
 
     #init network
-    network.init(data['serve_port'], data['send_port'])
+    network.init(data['serve_port'])
     network.hook_type("hello", test_cb)
 
     #init synclist

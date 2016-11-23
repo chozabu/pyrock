@@ -86,7 +86,7 @@ def send_packet(HOST, PORT, data, meta):
     return ret
 
 
-def init(serve_port, send_port):
+def init(serve_port):
     t=Thread(target=run,
              kwargs={'port': serve_port})
     t.daemon=True

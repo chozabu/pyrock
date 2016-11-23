@@ -27,11 +27,11 @@ def on_recv_packet(data, sender):
         for c in callbacks[type]:
             c(data, sender, meta)
 
-def init(serve_port, send_port):
-    basic_tcp_json.init(serve_port=serve_port, send_port=send_port)
+def init(serve_port):
+    basic_tcp_json.init(serve_port=serve_port)
     basic_tcp_json.on_recv_data = on_recv_packet
 
-    simple_http_json.init(serve_port=serve_port+10, send_port=send_port+10)
+    simple_http_json.init(serve_port=serve_port+10)
     simple_http_json.on_recv_data = on_recv_packet
 
 def hook_type(type, callback):

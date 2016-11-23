@@ -70,7 +70,7 @@ class EchoFactory(protocol.Factory):
     def buildProtocol(self, addr):
         return Echo()
 
-def init(serve_port, send_port):
+def init(serve_port):
     endpoints.serverFromString(reactor, "tcp:"+str(serve_port)).listen(EchoFactory())
     #print("starting networking thread")
     t=Thread(
