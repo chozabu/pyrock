@@ -84,5 +84,6 @@ def got_data(data, machine, meta):
     print(settings.machine_name, data, machine.name)
     if meta['subtype'] == "auto_peer_request":
         if settings.auto_accept == True:
+            print("accepting FR", data)
             mdata = data['data']
             add_machine(**mdata)

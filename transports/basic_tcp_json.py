@@ -61,7 +61,7 @@ class Echo(protocol.Protocol):
         #print(ip, port)
         #print(str(self.transport.getPeer()))
         #sender = machine.get_by_ip(ip)
-        sender = machine.machines_dict[jdata['meta']['pkey']]
+        sender = machine.machines_dict.get(jdata['meta']['pkey'])
         on_recv_data(jdata, sender)
 
         self.transport.write("OK".encode('utf-8'))
