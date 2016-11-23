@@ -15,12 +15,13 @@ def get_by_ip(ip):
             return m
 
 class Machine:
-    def __init__(self, name="unknown", pkey="unknown", pkeyhash="unknown", ip=None, port=None):
+    def __init__(self, name="unknown", pkey="unknown", pkeyhash="unknown", ip=None, port=None, autoconnect=False):
         self.name = name
         self.pkey = pkey
         self.pkeyhash = pkeyhash
         self.ip = ip
         self.port = port
+        self.autoconnect = autoconnect
     #def send_data(self, data):
     #    return send_data(self.ip, self.port, data)
     def send_packet(self, data, meta):
@@ -43,6 +44,7 @@ def loadcontacts(machinesfile='machines.json'):
             pkeyhash=m['pkeyhash'],
             ip=m['ip'],
             port=m['port'],
+            autoconnect=m.get("autoconnect", False),
         )
         machines.append(machine)
         machines_dict[machine.pkey] = machine
@@ -62,9 +64,25 @@ def add_machine(name, pkey, ip, port):
 def init(root):
     network.hook_type("machine", got_data)
 
+def autoconnect():
+    meta = {
+        "type": "machine",
+        "subtype": "auto_peer_request"
+    }
+    data = {
+        "name": settings.machine_name,
+        "pkey": settings.pkey,
+        "pkeyhash": settings.pkey+"_hash",
+        "ip": str(settings.ext_ip)
+    }
+    for m in machines:
+        if m.autoconnect:
+            print("attempting to connect to", m.name)
+            m.send_packet(data, meta)
+
 def got_data(data, machine, meta):
     print(settings.machine_name, data, machine.name)
-    if meta['subtype'] == "hello":
+    if meta['subtype'] == "auto_peer_request":
         if settings.auto_accept == True:
             mdata = data['data']
             add_machine(**mdata)
