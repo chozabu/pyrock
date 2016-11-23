@@ -19,6 +19,8 @@ from apps import basic_chat
 
 import random
 
+inittime = time.time()
+
 def test_cb(data, sender, meta):
     print(settings.machine_name, "MAINCB", data, sender, sender.ip, sender.name)
 
@@ -69,6 +71,9 @@ def main(settingsfile="settings.json", test_mode=False):
 
 
 def run_tests():
+    print(settings.machine_name, "ready to run tests")
+    while time.time() < inittime+1:
+        time.sleep(0.01)
     print(settings.machine_name, "Running tests")
     test_sl = synclist.create_synclist("global_test")
 
@@ -92,6 +97,7 @@ def run_tests():
     time.sleep(.3)
 
     print("resulting items:", test_sl.items)
+    print(inittime)
 
 
 
