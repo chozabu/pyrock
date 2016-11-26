@@ -57,6 +57,7 @@ def main(settingsfile="settings.json", test_mode=False):
     machine.loadcontacts(machinesfile)
 
     #load machines
+    machine.init()
     machine.autoconnect()
 
     #connect to all?

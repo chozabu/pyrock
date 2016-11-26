@@ -61,7 +61,7 @@ def add_machine(name, pkey, ip, port):
     machines_dict[machine.pkey] = machine
     return machine
 
-def init(root):
+def init(root=None):
     network.hook_type("machine", got_data)
 
 def autoconnect():
