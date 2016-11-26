@@ -9,6 +9,7 @@ running = True
 ui_port = 8080
 auto_accept = True
 ext_ip = None
+serve_port = 9999
 
 try:
     from urllib.request import urlopen
@@ -16,3 +17,10 @@ try:
     print("detected IP as", ext_ip)
 except:
     print("could not get external IP")
+
+def load_data(data):
+    global machine_name, pkey, ui_port, serve_port
+    machine_name = data['machine_name']
+    pkey = data['pkey']
+    ui_port = data['ui_port']
+    serve_port = data['serve_port']

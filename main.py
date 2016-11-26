@@ -15,7 +15,7 @@ import synclist
 import time
 from apps import basic_chat
 
-#import debugprint
+import debugprint
 
 import random
 
@@ -24,23 +24,22 @@ inittime = time.time()
 def test_cb(data, sender, meta):
     print(settings.machine_name, "MAINCB", data, sender, sender.ip, sender.name)
 
-def main(settingsfile="settings.json", test_mode=False):
+def main(settingsfile="settings.json", test_mode=False, no_auto=False):
     """Display a friendly greeting.
 
     :param str settingsfile: settings file to load
     :param bool test_mode: True to run some tests
+    :param bool no_auto: True disable auto FR
     """
 
     #load settings
     with open(settingsfile) as data_file:
         data = json.load(data_file)
+        settings.load_data(data)
         machinesfile = data['machines_file']
-        settings.machine_name = data['machine_name']
-        settings.pkey = data['pkey']
-        settings.ui_port = data['ui_port']
 
     #init network
-    network.init(data['serve_port'])
+    network.init(settings.serve_port)
     network.hook_type("hello", test_cb)
 
     #init synclist
@@ -58,7 +57,8 @@ def main(settingsfile="settings.json", test_mode=False):
 
     #load machines
     machine.init()
-    machine.autoconnect()
+    if not no_auto:
+        machine.autoconnect()
 
     #connect to all?
 
