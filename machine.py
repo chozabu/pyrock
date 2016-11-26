@@ -72,6 +72,7 @@ def autoconnect():
     data = {
         "name": settings.machine_name,
         "pkey": settings.pkey,
+        "port": settings.serve_port,
         "ip": str(settings.ext_ip)
     }
     for m in machines:
