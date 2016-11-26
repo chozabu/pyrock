@@ -14,7 +14,7 @@ import sys
 import machine
 
 def send_data(HOST, PORT, data):
-    #print("sending", HOST, PORT, data)
+    print("sendingTCP", HOST, PORT, data)
 
     try:
         # Create a socket (SOCK_STREAM means a TCP socket)

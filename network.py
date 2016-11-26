@@ -23,7 +23,7 @@ def send_packet(HOST, PORT, data, meta):
 def on_recv_packet(data, sender):
     meta = data['meta']
     type = meta['type']
-    print(settings.machine_name, "got", type, str(data)[:20])
+    print(settings.machine_name, "got", type, str(data))
     if type in callbacks:
         for c in callbacks[type]:
             c(data, sender, meta)

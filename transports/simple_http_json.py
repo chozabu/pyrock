@@ -23,6 +23,7 @@ import cgi
 class testHTTPServer_RequestHandler(BaseHTTPRequestHandler):
     # GET
     def do_GET(self):
+        print("Get HTTP request made")
         # Send response status code
         self.send_response(200)
 
@@ -65,8 +66,8 @@ def run(port=None):
 
 
 def send_data(HOST, PORT, data):
-    #print("sending", HOST, PORT, data)
     PORT = PORT + 10
+    print("sendingHTTP", HOST, PORT, data)
 
     #received = requests.post("http://localhost" + ":" + str(PORT), data=data)
     try:
