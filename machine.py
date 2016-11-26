@@ -81,7 +81,7 @@ def autoconnect():
             m.send_packet(data, meta)
 
 def got_data(data, machine, meta):
-    print(settings.machine_name, data, machine.name)
+    print(settings.machine_name, data, getattr(machine, "name", "unknown"))
     if meta['subtype'] == "auto_peer_request":
         if settings.auto_accept == True:
             print("accepting FR", data)
