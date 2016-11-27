@@ -11,12 +11,17 @@ import json
 
 callbacks = {}
 
+backends = [basic_tcp_json, simple_http_json]
+
 def send_packet(HOST, PORT, data, meta):
     meta['pkey'] = settings.pkey
     packet = json.dumps({"data":data, "meta":meta})
-    ret = simple_http_json.send_data(HOST,PORT, packet)
+    for b in backends:
+        ret = basic_tcp_json.send_data(HOST, PORT, packet)
+        if ret[0]:
+            break
     if not ret[0]:
-        ret = basic_tcp_json.send_data(HOST,PORT, packet)
+        print("failed to send packet on all backends",(HOST,PORT, packet))
     #ret = simple_http_json.send_data(HOST,PORT, packet)
     return ret
 
