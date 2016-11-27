@@ -99,6 +99,8 @@ def run_tests():
 
     print("resulting items:", test_sl.items)
     print(inittime)
+    from transports import basic_tcp_json
+    print("Clients", basic_tcp_json.EchoFactory.clients)
 
 
 

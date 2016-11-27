@@ -19,6 +19,7 @@ def send_data(HOST, PORT, data):
     try:
         # Create a socket (SOCK_STREAM means a TCP socket)
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
+            sock.settimeout(1)
             # Connect to server and send data
             sock.connect((HOST, PORT))
             sock.sendall(bytes(data + "\n", "utf-8"))
@@ -67,8 +68,11 @@ class Echo(protocol.Protocol):
         self.transport.write("OK".encode('utf-8'))
 
 class EchoFactory(protocol.Factory):
+    clients = []
     def buildProtocol(self, addr):
-        return Echo()
+        client = Echo()
+        EchoFactory.clients.append(client)
+        return client
 
 def init(serve_port):
     endpoints.serverFromString(reactor, "tcp:"+str(serve_port)).listen(EchoFactory())
