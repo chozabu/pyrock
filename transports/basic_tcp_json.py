@@ -13,24 +13,33 @@ import sys
 
 import machine
 
+csocklist = {}
+
 def send_data(HOST, PORT, data):
+    global csocklist
     print("sendingTCP", HOST, PORT, data)
 
     try:
         # Create a socket (SOCK_STREAM means a TCP socket)
-        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
+        id_string = str(HOST) + ':' + str(PORT)
+        sock = csocklist.get(id_string, None)
+        if not sock:
+            sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
             sock.settimeout(1)
             # Connect to server and send data
             sock.connect((HOST, PORT))
-            sock.sendall(bytes(data + "\n", "utf-8"))
+            csocklist[id_string] = sock
+        sock.sendall(bytes(data + "\n", "utf-8"))
 
-            # Receive data from the server and shut down
-            received = str(sock.recv(1024), "utf-8")
+        # Receive data from the server and shut down
+        received = str(sock.recv(1024), "utf-8")
 
         #print("Sent:     {}".format(data))
         #print("Received: {}".format(received))
-    except:
+    except Exception as e:
         print("TWISTED failed to send data", HOST, PORT, data)
+        print(e)
         return 0, "fail"
     return 1, received
 
@@ -43,6 +52,19 @@ def send_packet(HOST, PORT, data, meta):
     return ret
 
 class Echo(protocol.Protocol):
+    def __init__(self, factory):
+        self.factory = factory
+
+    def connectionMade(self):
+        self.factory.clients.append(self)
+
+    #def dataReceived(self, data):
+    #    for echoer in self.factory.clients:
+    #        echoer.transport.write(data)
+
+    def connectionLost(self, reason):
+        print("Connection lost!", self)
+        self.factory.clients.remove(self)
     def dataReceived(self, data):
         #print("echoing: ", data)
         #print(json.loads(data.decode()))
@@ -70,7 +92,7 @@ class Echo(protocol.Protocol):
 class EchoFactory(protocol.Factory):
     clients = []
     def buildProtocol(self, addr):
-        client = Echo()
+        client = Echo(self)
         EchoFactory.clients.append(client)
         return client
 
