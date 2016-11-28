@@ -15,11 +15,15 @@ class TracePrints(object):
 		from settings import machine_name
 		if self.newline:
 			#self.stdout.write(s+"\n")
-			#stack = traceback.extract_stack()
-			#stackout = stack[-2]#[0:10]
+			stack = traceback.extract_stack()
+			stackout = stack[-2]#[0:10]
 			#self.stdout.write('--"'+machine_name+'"'+stackout[0]+'", line '+str(stackout[1])+', in '+stackout[2]+'\n')
+			filename = stackout[0].split('/')[-1]
+			ministack = filename + ':' + str(stackout[1])
 			printcount +=1
-			strs = "(" + machine_name + " - " + str(printcount) + ")" + str(s)#+"\n"
+			prefix = "(" + machine_name + " - " + str(printcount) + ' ' + ministack + ")"
+			prefix+= " " * (40-len(prefix))
+			strs = prefix + str(s)#+"\n"
 		else:
 			strs = s
 		self.stdout.write(strs)
