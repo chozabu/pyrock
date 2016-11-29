@@ -55,6 +55,10 @@ class Echo(protocol.Protocol):
     def __init__(self, factory):
         self.factory = factory
 
+    def peer_string(self):
+        peer = self.transport.getPeer()
+        return str(peer.host) + ':' + str(peer.port)
+
     def connectionMade(self):
         self.factory.clients.append(self)
 
@@ -86,6 +90,7 @@ class Echo(protocol.Protocol):
         #sender = machine.get_by_ip(ip)
         sender = machine.machines_dict.get(jdata['meta']['pkey'])
         on_recv_data(jdata, sender)
+        print("------------------", self.transport.getPeer(), self.peer_string())
 
         self.transport.write("OK".encode('utf-8'))
 

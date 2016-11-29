@@ -82,7 +82,6 @@ class SyncList:
         #print(self.items_by_recv_date)
         for i in self.items_by_recv_date[ls:]:
             self._send_item(cId, i)
-            print("sent")
         #should confirm contact has got data, then:
         contact['last_sync'] = len(self.items_by_recv_date)
 

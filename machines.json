@@ -5,13 +5,5 @@
     "port":9998,
     "pkey":"omegas_key",
     "pkeyhash":"omegas_key_hash"
-  },
-  {
-    "name":"VPServer",
-    "ip":"vps336468.ovh.net",
-    "port":9999,
-    "pkey":"vp_key",
-    "pkeyhash":"vp_key",
-    "autoconnect": true
   }
 ]
